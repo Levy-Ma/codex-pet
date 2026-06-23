@@ -1,0 +1,23 @@
+{
+  "name": "codex-pet",
+  "version": "0.1.0",
+  "description": "A local desktop black-cat companion for Codex status.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Codex Pet",
+    "shortDescription": "A floating black-cat companion for Codex.",
+    "longDescription": "Codex Pet adds a local desktop companion prototype that can react to Codex-like status changes through a local state file.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": ["Local", "Interactive"],
+    "defaultPrompt": [
+      "Start my Codex Pet.",
+      "Set Codex Pet to thinking.",
+      "Demo Codex Pet statuses."
+    ],
+    "brandColor": "#111827"
+  }
+}
