@@ -26,11 +26,7 @@ From this folder:
 python3 scripts/start_pet.py
 ```
 
-If your default Python comes from pyenv and reports `No module named '_tkinter'`, use:
-
-```bash
-/usr/bin/python3 scripts/start_pet.py
-```
+On macOS, the launcher builds and runs the native AppKit pet first. Python/Tk is kept only as a fallback for other environments.
 
 In another terminal, try:
 
@@ -44,7 +40,8 @@ python3 scripts/demo_statuses.py
 
 - `.codex-plugin/plugin.json`: Codex plugin manifest
 - `skills/codex-pet/SKILL.md`: instructions Codex can use when this plugin is installed
-- `desktop_pet/app.py`: desktop pet window and animation
+- `desktop_pet/macos/CodexPet.swift`: native macOS desktop pet window
+- `desktop_pet/app.py`: Python/Tk fallback desktop pet window
 - `scripts/start_pet.py`: launcher
 - `scripts/set_status.py`: writes the current pet state
 - `scripts/demo_statuses.py`: cycles through all MVP states
