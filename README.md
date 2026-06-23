@@ -26,6 +26,12 @@ From this folder:
 python3 scripts/start_pet.py
 ```
 
+If your default Python comes from pyenv and reports `No module named '_tkinter'`, use:
+
+```bash
+/usr/bin/python3 scripts/start_pet.py
+```
+
 In another terminal, try:
 
 ```bash

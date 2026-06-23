@@ -2,3 +2,4 @@ runtime/pet-state.json
 runtime/pycache/
 __pycache__/
 *.pyc
+.DS_Store
