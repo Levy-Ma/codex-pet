@@ -3,6 +3,7 @@ import Foundation
 
 let statePath = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "runtime/pet-state.json"
 let petImagePath = CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : ""
+let petBlinkImagePath = CommandLine.arguments.count > 3 ? CommandLine.arguments[3] : ""
 
 struct PetState {
     var state: String = "idle"
@@ -50,11 +51,13 @@ final class PetStateStore {
 final class PetView: NSView {
     let store: PetStateStore
     let petImage: NSImage?
+    let petBlinkImage: NSImage?
     var tick: Double = 0
 
     init(frame: NSRect, store: PetStateStore) {
         self.store = store
         self.petImage = petImagePath.isEmpty ? nil : NSImage(contentsOfFile: petImagePath)
+        self.petBlinkImage = petBlinkImagePath.isEmpty ? nil : NSImage(contentsOfFile: petBlinkImagePath)
         super.init(frame: frame)
         wantsLayer = true
         layer?.backgroundColor = NSColor.clear.cgColor
@@ -74,7 +77,9 @@ final class PetView: NSView {
         let breathe = sin(phase * 0.8) * 2.0
         let tail = sin(phase * 1.4) * 8.0
         if let petImage = petImage {
-            drawPetImage(petImage, bob: bob)
+            let blinkFrame = Int(tick) % 126 < 5
+            let image = blinkFrame ? (petBlinkImage ?? petImage) : petImage
+            drawPetImage(image, phase: phase, bob: bob)
             drawStatus(state: state, phase: phase, bob: bob)
             tick += 1
             return
@@ -90,13 +95,14 @@ final class PetView: NSView {
     }
 
 
-    func drawPetImage(_ image: NSImage, bob: Double) {
+    func drawPetImage(_ image: NSImage, phase: Double, bob: Double) {
         let padding: CGFloat = 8
+        let breathe = 1.0 + CGFloat(sin(phase * 0.8)) * 0.012
         let available = NSRect(x: padding, y: padding - CGFloat(bob), width: bounds.width - padding * 2, height: bounds.height - padding * 2)
         let imageSize = image.size
         guard imageSize.width > 0 && imageSize.height > 0 else { return }
         let scale = min(available.width / imageSize.width, available.height / imageSize.height)
-        let drawSize = NSSize(width: imageSize.width * scale, height: imageSize.height * scale)
+        let drawSize = NSSize(width: imageSize.width * scale * breathe, height: imageSize.height * scale * breathe)
         let rect = NSRect(
             x: available.midX - drawSize.width / 2,
             y: available.midY - drawSize.height / 2,

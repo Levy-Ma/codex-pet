@@ -53,7 +53,8 @@ def run_native_pet() -> None:
     close_existing_native_pet()
     state_path = PLUGIN_ROOT / "runtime" / "pet-state.json"
     pet_image = PLUGIN_ROOT / "assets" / "pet" / "idle.png"
-    os.execv(str(NATIVE_BINARY), [str(NATIVE_BINARY), str(state_path), str(pet_image)])
+    blink_image = PLUGIN_ROOT / "assets" / "pet" / "idle_blink.png"
+    os.execv(str(NATIVE_BINARY), [str(NATIVE_BINARY), str(state_path), str(pet_image), str(blink_image)])
 
 
 def restart_with_system_python_if_needed(exc: ModuleNotFoundError) -> None:
