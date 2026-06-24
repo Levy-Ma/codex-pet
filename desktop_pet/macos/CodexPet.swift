@@ -2,6 +2,7 @@ import AppKit
 import Foundation
 
 let statePath = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "runtime/pet-state.json"
+let petImagePath = CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : ""
 
 struct PetState {
     var state: String = "idle"
@@ -48,10 +49,12 @@ final class PetStateStore {
 
 final class PetView: NSView {
     let store: PetStateStore
+    let petImage: NSImage?
     var tick: Double = 0
 
     init(frame: NSRect, store: PetStateStore) {
         self.store = store
+        self.petImage = petImagePath.isEmpty ? nil : NSImage(contentsOfFile: petImagePath)
         super.init(frame: frame)
         wantsLayer = true
         layer?.backgroundColor = NSColor.clear.cgColor
@@ -70,6 +73,12 @@ final class PetView: NSView {
         let bob = sin(phase) * (state == "sleeping" ? 1.0 : 3.0)
         let breathe = sin(phase * 0.8) * 2.0
         let tail = sin(phase * 1.4) * 8.0
+        if let petImage = petImage {
+            drawPetImage(petImage, bob: bob)
+            drawStatus(state: state, phase: phase, bob: bob)
+            tick += 1
+            return
+        }
         drawShadow()
         drawTail(tail: tail, bob: bob, state: state)
         drawBody(breathe: breathe, bob: bob, state: state)
@@ -78,6 +87,24 @@ final class PetView: NSView {
         drawStatus(state: state, phase: phase, bob: bob)
         drawCaption(state: state)
         tick += 1
+    }
+
+
+    func drawPetImage(_ image: NSImage, bob: Double) {
+        let padding: CGFloat = 8
+        let available = NSRect(x: padding, y: padding - CGFloat(bob), width: bounds.width - padding * 2, height: bounds.height - padding * 2)
+        let imageSize = image.size
+        guard imageSize.width > 0 && imageSize.height > 0 else { return }
+        let scale = min(available.width / imageSize.width, available.height / imageSize.height)
+        let drawSize = NSSize(width: imageSize.width * scale, height: imageSize.height * scale)
+        let rect = NSRect(
+            x: available.midX - drawSize.width / 2,
+            y: available.midY - drawSize.height / 2,
+            width: drawSize.width,
+            height: drawSize.height
+        )
+        NSGraphicsContext.current?.imageInterpolation = .high
+        image.draw(in: rect, from: NSRect(origin: .zero, size: imageSize), operation: .sourceOver, fraction: 1.0)
     }
 
     func color(_ hex: Int, alpha: CGFloat = 1) -> NSColor {
