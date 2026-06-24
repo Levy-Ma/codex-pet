@@ -110,17 +110,16 @@ final class PetView: NSView {
     func drawTail(tail: Double, bob: Double, state: String) {
         let outline = color(0x3a241f)
         let fur = color(state == "success" ? 0x071008 : 0x050505)
-        let y = 41 - bob + tail * 0.08
-        let outer = NSBezierPath(roundedRect: NSRect(x: 139, y: y, width: 94, height: 22), xRadius: 12, yRadius: 11)
+        let y = 38 - bob + tail * 0.08
+        let outer = NSBezierPath()
+        outer.move(to: NSPoint(x: 141, y: y + 23))
+        outer.curve(to: NSPoint(x: 198, y: y + 22), controlPoint1: NSPoint(x: 160, y: y + 27), controlPoint2: NSPoint(x: 179, y: y + 26))
+        outer.curve(to: NSPoint(x: 232, y: y + 13), controlPoint1: NSPoint(x: 211, y: y + 19), controlPoint2: NSPoint(x: 223, y: y + 12))
+        outer.curve(to: NSPoint(x: 229, y: y - 1), controlPoint1: NSPoint(x: 241, y: y + 13), controlPoint2: NSPoint(x: 240, y: y + 2))
+        outer.curve(to: NSPoint(x: 196, y: y + 2), controlPoint1: NSPoint(x: 218, y: y - 4), controlPoint2: NSPoint(x: 207, y: y - 1))
+        outer.curve(to: NSPoint(x: 140, y: y + 4), controlPoint1: NSPoint(x: 176, y: y + 7), controlPoint2: NSPoint(x: 158, y: y + 4))
+        outer.close()
         strokePath(outer, fill: fur, stroke: outline, line: 5)
-
-        let stripe = NSBezierPath()
-        stripe.move(to: NSPoint(x: 158, y: y + 11))
-        stripe.curve(to: NSPoint(x: 214, y: y + 12), controlPoint1: NSPoint(x: 176, y: y + 8), controlPoint2: NSPoint(x: 198, y: y + 8))
-        outline.setStroke()
-        stripe.lineWidth = 4
-        stripe.lineCapStyle = .round
-        stripe.stroke()
     }
 
     func drawBody(breathe: Double, bob: Double, state: String) {
@@ -134,15 +133,21 @@ final class PetView: NSView {
         let rightHand = NSBezierPath(roundedRect: NSRect(x: 122, y: 18 - bob, width: 28, height: 58), xRadius: 13, yRadius: 14)
         strokePath(rightHand, fill: fur, stroke: outline, line: 4)
 
-        for x in [99.0, 112.0, 133.0, 146.0] {
-            let toe = NSBezierPath()
-            toe.move(to: NSPoint(x: x, y: 21 - bob))
-            toe.curve(to: NSPoint(x: x + 2, y: 54 - bob), controlPoint1: NSPoint(x: x - 3, y: 32 - bob), controlPoint2: NSPoint(x: x - 1, y: 45 - bob))
-            outline.setStroke()
-            toe.lineWidth = 3.2
-            toe.lineCapStyle = .round
-            toe.stroke()
-        }
+        let leftLegLine = NSBezierPath()
+        leftLegLine.move(to: NSPoint(x: 104, y: 35 - bob))
+        leftLegLine.curve(to: NSPoint(x: 112, y: 72 - bob), controlPoint1: NSPoint(x: 103, y: 47 - bob), controlPoint2: NSPoint(x: 107, y: 61 - bob))
+        outline.setStroke()
+        leftLegLine.lineWidth = 4
+        leftLegLine.lineCapStyle = .round
+        leftLegLine.stroke()
+
+        let rightLegLine = NSBezierPath()
+        rightLegLine.move(to: NSPoint(x: 136, y: 35 - bob))
+        rightLegLine.curve(to: NSPoint(x: 144, y: 72 - bob), controlPoint1: NSPoint(x: 137, y: 47 - bob), controlPoint2: NSPoint(x: 141, y: 61 - bob))
+        outline.setStroke()
+        rightLegLine.lineWidth = 4
+        rightLegLine.lineCapStyle = .round
+        rightLegLine.stroke()
     }
 
     func drawHead(bob: Double, state: String) {
@@ -216,8 +221,8 @@ final class PetView: NSView {
             r.lineCapStyle = .round
             r.stroke()
         } else {
-            oval(NSRect(x: 82, y: y + 61, width: 22, height: 48), fill: pupil)
-            oval(NSRect(x: 137, y: y + 61, width: 22, height: 48), fill: pupil)
+            oval(NSRect(x: 79, y: y + 57, width: 28, height: 56), fill: pupil)
+            oval(NSRect(x: 134, y: y + 57, width: 28, height: 56), fill: pupil)
         }
     }
 
