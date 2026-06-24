@@ -104,138 +104,145 @@ final class PetView: NSView {
     }
 
     func drawShadow() {
-        oval(NSRect(x: 44, y: 12, width: 165, height: 18), fill: color(0x1a1a1d, alpha: 0.22))
+        oval(NSRect(x: 54, y: 13, width: 226, height: 20), fill: color(0x1a1a1d, alpha: 0.20))
     }
 
     func drawTail(tail: Double, bob: Double, state: String) {
-        let outline = color(0x3a241f)
+        let outline = color(0x4a2b22)
         let fur = color(state == "success" ? 0x071008 : 0x050505)
-        let y = 38 - bob + tail * 0.08
+        let y = 46 - bob + tail * 0.06
         let outer = NSBezierPath()
-        outer.move(to: NSPoint(x: 141, y: y + 23))
-        outer.curve(to: NSPoint(x: 198, y: y + 22), controlPoint1: NSPoint(x: 160, y: y + 27), controlPoint2: NSPoint(x: 179, y: y + 26))
-        outer.curve(to: NSPoint(x: 232, y: y + 13), controlPoint1: NSPoint(x: 211, y: y + 19), controlPoint2: NSPoint(x: 223, y: y + 12))
-        outer.curve(to: NSPoint(x: 229, y: y - 1), controlPoint1: NSPoint(x: 241, y: y + 13), controlPoint2: NSPoint(x: 240, y: y + 2))
-        outer.curve(to: NSPoint(x: 196, y: y + 2), controlPoint1: NSPoint(x: 218, y: y - 4), controlPoint2: NSPoint(x: 207, y: y - 1))
-        outer.curve(to: NSPoint(x: 140, y: y + 4), controlPoint1: NSPoint(x: 176, y: y + 7), controlPoint2: NSPoint(x: 158, y: y + 4))
+        outer.move(to: NSPoint(x: 202, y: y + 22))
+        outer.curve(to: NSPoint(x: 250, y: y + 19), controlPoint1: NSPoint(x: 219, y: y + 26), controlPoint2: NSPoint(x: 236, y: y + 25))
+        outer.curve(to: NSPoint(x: 304, y: y + 8), controlPoint1: NSPoint(x: 268, y: y + 11), controlPoint2: NSPoint(x: 286, y: y + 7))
+        outer.curve(to: NSPoint(x: 302, y: y - 8), controlPoint1: NSPoint(x: 316, y: y + 9), controlPoint2: NSPoint(x: 315, y: y - 5))
+        outer.curve(to: NSPoint(x: 248, y: y - 3), controlPoint1: NSPoint(x: 283, y: y - 13), controlPoint2: NSPoint(x: 267, y: y - 11))
+        outer.curve(to: NSPoint(x: 200, y: y + 1), controlPoint1: NSPoint(x: 232, y: y + 3), controlPoint2: NSPoint(x: 217, y: y + 1))
         outer.close()
-        strokePath(outer, fill: fur, stroke: outline, line: 5)
+        strokePath(outer, fill: fur, stroke: outline, line: 7)
     }
 
     func drawBody(breathe: Double, bob: Double, state: String) {
-        let outline = color(0x3a241f)
+        let outline = color(0x4a2b22)
         let fur = color(0x050505)
-        let body = NSBezierPath(roundedRect: NSRect(x: 82, y: 18 - bob, width: 76, height: 76 + breathe), xRadius: 36, yRadius: 34)
-        strokePath(body, fill: fur, stroke: outline, line: 5)
+        let y = 22 - bob
 
-        let leftHand = NSBezierPath(roundedRect: NSRect(x: 88, y: 18 - bob, width: 28, height: 58), xRadius: 13, yRadius: 14)
-        strokePath(leftHand, fill: fur, stroke: outline, line: 4)
-        let rightHand = NSBezierPath(roundedRect: NSRect(x: 122, y: 18 - bob, width: 28, height: 58), xRadius: 13, yRadius: 14)
-        strokePath(rightHand, fill: fur, stroke: outline, line: 4)
+        let leftHip = NSBezierPath(ovalIn: NSRect(x: 66, y: y + 16, width: 56, height: 74))
+        strokePath(leftHip, fill: fur, stroke: outline, line: 7)
+        let rightHip = NSBezierPath(ovalIn: NSRect(x: 174, y: y + 16, width: 56, height: 74))
+        strokePath(rightHip, fill: fur, stroke: outline, line: 7)
 
-        let leftLegLine = NSBezierPath()
-        leftLegLine.move(to: NSPoint(x: 104, y: 35 - bob))
-        leftLegLine.curve(to: NSPoint(x: 112, y: 72 - bob), controlPoint1: NSPoint(x: 103, y: 47 - bob), controlPoint2: NSPoint(x: 107, y: 61 - bob))
+        let torso = NSBezierPath(roundedRect: NSRect(x: 102, y: y + 18, width: 92, height: 102 + breathe), xRadius: 42, yRadius: 38)
+        strokePath(torso, fill: fur, stroke: outline, line: 7)
+
+        let leftLeg = NSBezierPath(roundedRect: NSRect(x: 91, y: y, width: 43, height: 82), xRadius: 20, yRadius: 20)
+        strokePath(leftLeg, fill: fur, stroke: outline, line: 7)
+        let rightLeg = NSBezierPath(roundedRect: NSRect(x: 151, y: y, width: 43, height: 82), xRadius: 20, yRadius: 20)
+        strokePath(rightLeg, fill: fur, stroke: outline, line: 7)
+
+        let leftLine = NSBezierPath()
+        leftLine.move(to: NSPoint(x: 111, y: y + 14))
+        leftLine.curve(to: NSPoint(x: 121, y: y + 72), controlPoint1: NSPoint(x: 112, y: y + 34), controlPoint2: NSPoint(x: 116, y: y + 54))
         outline.setStroke()
-        leftLegLine.lineWidth = 4
-        leftLegLine.lineCapStyle = .round
-        leftLegLine.stroke()
+        leftLine.lineWidth = 6
+        leftLine.lineCapStyle = .round
+        leftLine.stroke()
 
-        let rightLegLine = NSBezierPath()
-        rightLegLine.move(to: NSPoint(x: 136, y: 35 - bob))
-        rightLegLine.curve(to: NSPoint(x: 144, y: 72 - bob), controlPoint1: NSPoint(x: 137, y: 47 - bob), controlPoint2: NSPoint(x: 141, y: 61 - bob))
+        let rightLine = NSBezierPath()
+        rightLine.move(to: NSPoint(x: 172, y: y + 14))
+        rightLine.curve(to: NSPoint(x: 181, y: y + 72), controlPoint1: NSPoint(x: 173, y: y + 34), controlPoint2: NSPoint(x: 177, y: y + 54))
         outline.setStroke()
-        rightLegLine.lineWidth = 4
-        rightLegLine.lineCapStyle = .round
-        rightLegLine.stroke()
+        rightLine.lineWidth = 6
+        rightLine.lineCapStyle = .round
+        rightLine.stroke()
     }
 
     func drawHead(bob: Double, state: String) {
-        let outline = color(0x3a241f)
+        let outline = color(0x4a2b22)
         let fur = color(0x050505)
-        let innerEar = color(0xb7d2a8)
-        let y = 42 - bob
+        let innerEar = color(0xc6d9bd)
+        let y = 96 - bob
 
         let leftEar = NSBezierPath()
-        leftEar.move(to: NSPoint(x: 45, y: y + 83))
-        leftEar.curve(to: NSPoint(x: 72, y: y + 147), controlPoint1: NSPoint(x: 41, y: y + 122), controlPoint2: NSPoint(x: 47, y: y + 149))
-        leftEar.curve(to: NSPoint(x: 112, y: y + 95), controlPoint1: NSPoint(x: 94, y: y + 143), controlPoint2: NSPoint(x: 107, y: y + 120))
+        leftEar.move(to: NSPoint(x: 61, y: y + 52))
+        leftEar.curve(to: NSPoint(x: 39, y: y + 147), controlPoint1: NSPoint(x: 37, y: y + 86), controlPoint2: NSPoint(x: 26, y: y + 142))
+        leftEar.curve(to: NSPoint(x: 124, y: y + 102), controlPoint1: NSPoint(x: 70, y: y + 160), controlPoint2: NSPoint(x: 99, y: y + 133))
         leftEar.close()
-        strokePath(leftEar, fill: fur, stroke: outline, line: 5)
+        strokePath(leftEar, fill: fur, stroke: outline, line: 8)
 
         let rightEar = NSBezierPath()
-        rightEar.move(to: NSPoint(x: 128, y: y + 95))
-        rightEar.curve(to: NSPoint(x: 168, y: y + 147), controlPoint1: NSPoint(x: 134, y: y + 121), controlPoint2: NSPoint(x: 148, y: y + 143))
-        rightEar.curve(to: NSPoint(x: 195, y: y + 83), controlPoint1: NSPoint(x: 194, y: y + 149), controlPoint2: NSPoint(x: 199, y: y + 122))
+        rightEar.move(to: NSPoint(x: 196, y: y + 102))
+        rightEar.curve(to: NSPoint(x: 281, y: y + 147), controlPoint1: NSPoint(x: 221, y: y + 133), controlPoint2: NSPoint(x: 250, y: y + 160))
+        rightEar.curve(to: NSPoint(x: 259, y: y + 52), controlPoint1: NSPoint(x: 294, y: y + 142), controlPoint2: NSPoint(x: 283, y: y + 86))
         rightEar.close()
-        strokePath(rightEar, fill: fur, stroke: outline, line: 5)
+        strokePath(rightEar, fill: fur, stroke: outline, line: 8)
 
         let leftInner = NSBezierPath()
-        leftInner.move(to: NSPoint(x: 59, y: y + 92))
-        leftInner.curve(to: NSPoint(x: 76, y: y + 128), controlPoint1: NSPoint(x: 58, y: y + 113), controlPoint2: NSPoint(x: 63, y: y + 129))
-        leftInner.curve(to: NSPoint(x: 97, y: y + 95), controlPoint1: NSPoint(x: 88, y: y + 126), controlPoint2: NSPoint(x: 95, y: y + 111))
+        leftInner.move(to: NSPoint(x: 55, y: y + 61))
+        leftInner.curve(to: NSPoint(x: 48, y: y + 131), controlPoint1: NSPoint(x: 44, y: y + 89), controlPoint2: NSPoint(x: 38, y: y + 129))
+        leftInner.curve(to: NSPoint(x: 105, y: y + 98), controlPoint1: NSPoint(x: 70, y: y + 139), controlPoint2: NSPoint(x: 91, y: y + 120))
         leftInner.close()
         innerEar.setFill(); leftInner.fill()
 
         let rightInner = NSBezierPath()
-        rightInner.move(to: NSPoint(x: 143, y: y + 95))
-        rightInner.curve(to: NSPoint(x: 164, y: y + 128), controlPoint1: NSPoint(x: 146, y: y + 111), controlPoint2: NSPoint(x: 153, y: y + 126))
-        rightInner.curve(to: NSPoint(x: 181, y: y + 92), controlPoint1: NSPoint(x: 178, y: y + 129), controlPoint2: NSPoint(x: 183, y: y + 113))
+        rightInner.move(to: NSPoint(x: 215, y: y + 98))
+        rightInner.curve(to: NSPoint(x: 272, y: y + 131), controlPoint1: NSPoint(x: 229, y: y + 120), controlPoint2: NSPoint(x: 250, y: y + 139))
+        rightInner.curve(to: NSPoint(x: 265, y: y + 61), controlPoint1: NSPoint(x: 282, y: y + 129), controlPoint2: NSPoint(x: 276, y: y + 89))
         rightInner.close()
         innerEar.setFill(); rightInner.fill()
 
-        let head = NSBezierPath(ovalIn: NSRect(x: 55, y: y + 11, width: 130, height: 130))
-        strokePath(head, fill: fur, stroke: outline, line: 5)
+        let head = NSBezierPath(ovalIn: NSRect(x: 58, y: y + 10, width: 204, height: 166))
+        strokePath(head, fill: fur, stroke: outline, line: 8)
         if state == "error" {
             color(0xff6b6b, alpha: 0.65).setStroke()
-            let alert = NSBezierPath(ovalIn: NSRect(x: 62, y: y + 18, width: 116, height: 116))
-            alert.lineWidth = 3
+            let alert = NSBezierPath(ovalIn: NSRect(x: 68, y: y + 20, width: 184, height: 146))
+            alert.lineWidth = 4
             alert.stroke()
         }
     }
 
     func drawFace(bob: Double, state: String) {
-        let outline = color(0x3a241f)
-        let eyeCream = color(0xf2efdc)
+        let outline = color(0x4a2b22)
+        let eyeCream = color(0xf5f0de)
         let pupil = color(0x030303)
-        let y = 42 - bob
+        let y = 96 - bob
         let blink = Int(tick) % 92 < 3 && state != "error" && state != "sleeping"
 
-        let leftEyeRect = NSRect(x: 67, y: y + 51, width: 51, height: 70)
-        let rightEyeRect = NSRect(x: 122, y: y + 51, width: 51, height: 70)
-        oval(leftEyeRect, fill: eyeCream, stroke: outline, line: 4)
-        oval(rightEyeRect, fill: eyeCream, stroke: outline, line: 4)
+        let leftEyeRect = NSRect(x: 81, y: y + 52, width: 72, height: 112)
+        let rightEyeRect = NSRect(x: 167, y: y + 52, width: 72, height: 112)
+        oval(leftEyeRect, fill: eyeCream, stroke: outline, line: 7)
+        oval(rightEyeRect, fill: eyeCream, stroke: outline, line: 7)
 
         if state == "sleeping" || blink {
             color(0x050505).setStroke()
             let l = NSBezierPath()
-            l.move(to: NSPoint(x: 79, y: y + 87))
-            l.curve(to: NSPoint(x: 107, y: y + 87), controlPoint1: NSPoint(x: 86, y: y + 78), controlPoint2: NSPoint(x: 100, y: y + 78))
-            l.lineWidth = 5
+            l.move(to: NSPoint(x: 98, y: y + 109))
+            l.curve(to: NSPoint(x: 136, y: y + 109), controlPoint1: NSPoint(x: 108, y: y + 96), controlPoint2: NSPoint(x: 126, y: y + 96))
+            l.lineWidth = 7
             l.lineCapStyle = .round
             l.stroke()
             let r = NSBezierPath()
-            r.move(to: NSPoint(x: 134, y: y + 87))
-            r.curve(to: NSPoint(x: 162, y: y + 87), controlPoint1: NSPoint(x: 141, y: y + 78), controlPoint2: NSPoint(x: 155, y: y + 78))
-            r.lineWidth = 5
+            r.move(to: NSPoint(x: 184, y: y + 109))
+            r.curve(to: NSPoint(x: 222, y: y + 109), controlPoint1: NSPoint(x: 194, y: y + 96), controlPoint2: NSPoint(x: 212, y: y + 96))
+            r.lineWidth = 7
             r.lineCapStyle = .round
             r.stroke()
         } else {
-            oval(NSRect(x: 79, y: y + 57, width: 28, height: 56), fill: pupil)
-            oval(NSRect(x: 134, y: y + 57, width: 28, height: 56), fill: pupil)
+            oval(NSRect(x: 103, y: y + 72, width: 38, height: 78), fill: pupil)
+            oval(NSRect(x: 189, y: y + 72, width: 38, height: 78), fill: pupil)
         }
     }
 
     func drawStatus(state: String, phase: Double, bob: Double) {
         let attrs: [NSAttributedString.Key: Any] = [.font: NSFont.boldSystemFont(ofSize: 28)]
         if state == "thinking" {
-            for i in 0..<3 { oval(NSRect(x: 178 + i * 14, y: 136 + Int(sin(phase + Double(i)) * 5), width: 8, height: 8), fill: color(0x65a9ff)) }
+            for i in 0..<3 { oval(NSRect(x: 258 + i * 14, y: 205 + Int(sin(phase + Double(i)) * 5), width: 8, height: 8), fill: color(0x65a9ff)) }
         } else if state == "success" {
-            NSAttributedString(string: "OK", attributes: attrs.merging([.foregroundColor: color(0x54d17a)]) { $1 }).draw(at: NSPoint(x: 174, y: 130 - bob))
+            NSAttributedString(string: "OK", attributes: attrs.merging([.foregroundColor: color(0x54d17a)]) { $1 }).draw(at: NSPoint(x: 252, y: 205 - bob))
         } else if state == "error" {
-            NSAttributedString(string: "!", attributes: attrs.merging([.foregroundColor: color(0xff6b6b)]) { $1 }).draw(at: NSPoint(x: 184, y: 130 - bob))
+            NSAttributedString(string: "!", attributes: attrs.merging([.foregroundColor: color(0xff6b6b)]) { $1 }).draw(at: NSPoint(x: 268, y: 205 - bob))
         } else if state == "sleeping" {
-            NSAttributedString(string: "Zz", attributes: attrs.merging([.foregroundColor: color(0x65a9ff)]) { $1 }).draw(at: NSPoint(x: 176, y: 134))
+            NSAttributedString(string: "Zz", attributes: attrs.merging([.foregroundColor: color(0x65a9ff)]) { $1 }).draw(at: NSPoint(x: 258, y: 208))
         }
     }
 
@@ -244,7 +251,7 @@ final class PetView: NSView {
         let text = labels[state] ?? "ready"
         let attrs: [NSAttributedString.Key: Any] = [.font: NSFont.boldSystemFont(ofSize: 11), .foregroundColor: color(0xf5f7fa)]
         let s = NSAttributedString(string: text, attributes: attrs)
-        s.draw(at: NSPoint(x: 120 - s.size().width / 2, y: 2))
+        s.draw(at: NSPoint(x: 160 - s.size().width / 2, y: 2))
     }
 }
 
@@ -255,8 +262,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
-        let view = PetView(frame: NSRect(x: 0, y: 0, width: 240, height: 190), store: store)
-        window = NSWindow(contentRect: NSRect(x: 80, y: 420, width: 240, height: 190), styleMask: [.borderless], backing: .buffered, defer: false)
+        let view = PetView(frame: NSRect(x: 0, y: 0, width: 320, height: 270), store: store)
+        window = NSWindow(contentRect: NSRect(x: 80, y: 360, width: 320, height: 270), styleMask: [.borderless], backing: .buffered, defer: false)
         window.isOpaque = false
         window.backgroundColor = .clear
         window.level = .floating

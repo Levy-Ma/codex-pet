@@ -28,7 +28,8 @@ def build_native_pet() -> bool:
     module_cache.mkdir(parents=True, exist_ok=True)
     digest = source_digest()
     previous_digest = NATIVE_STAMP.read_text(encoding="utf-8").strip() if NATIVE_STAMP.exists() else ""
-    needs_build = not NATIVE_BINARY.exists() or previous_digest != digest
+    # Always rebuild during design iteration so the desktop pet cannot show a stale binary.
+    needs_build = True
     if needs_build:
         env = os.environ.copy()
         env["CLANG_MODULE_CACHE_PATH"] = str(module_cache)
@@ -44,7 +45,12 @@ def build_native_pet() -> bool:
     return True
 
 
+def close_existing_native_pet() -> None:
+    subprocess.run(["/usr/bin/pkill", "-x", "CodexPetNative"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
+
+
 def run_native_pet() -> None:
+    close_existing_native_pet()
     state_path = PLUGIN_ROOT / "runtime" / "pet-state.json"
     os.execv(str(NATIVE_BINARY), [str(NATIVE_BINARY), str(state_path)])
 
