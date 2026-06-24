@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import hashlib
 import os
 import platform
 from pathlib import Path
@@ -10,7 +11,12 @@ sys.path.insert(0, str(PLUGIN_ROOT))
 
 NATIVE_SOURCE = PLUGIN_ROOT / "desktop_pet" / "macos" / "CodexPet.swift"
 NATIVE_BINARY = PLUGIN_ROOT / "runtime" / "CodexPetNative"
+NATIVE_STAMP = PLUGIN_ROOT / "runtime" / "CodexPetNative.sha256"
 SYSTEM_PYTHON = Path("/usr/bin/python3")
+
+
+def source_digest() -> str:
+    return hashlib.sha256(NATIVE_SOURCE.read_bytes()).hexdigest()
 
 
 def build_native_pet() -> bool:
@@ -20,7 +26,9 @@ def build_native_pet() -> bool:
     NATIVE_BINARY.parent.mkdir(parents=True, exist_ok=True)
     module_cache = PLUGIN_ROOT / "runtime" / "swift-module-cache"
     module_cache.mkdir(parents=True, exist_ok=True)
-    needs_build = not NATIVE_BINARY.exists() or NATIVE_BINARY.stat().st_mtime < NATIVE_SOURCE.stat().st_mtime
+    digest = source_digest()
+    previous_digest = NATIVE_STAMP.read_text(encoding="utf-8").strip() if NATIVE_STAMP.exists() else ""
+    needs_build = not NATIVE_BINARY.exists() or previous_digest != digest
     if needs_build:
         env = os.environ.copy()
         env["CLANG_MODULE_CACHE_PATH"] = str(module_cache)
@@ -32,6 +40,7 @@ def build_native_pet() -> bool:
         )
         if result.returncode != 0:
             return False
+        NATIVE_STAMP.write_text(digest + "\n", encoding="utf-8")
     return True
 
 

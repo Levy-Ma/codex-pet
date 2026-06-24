@@ -5,3 +5,4 @@ __pycache__/
 .DS_Store
 runtime/CodexPetNative
 runtime/swift-module-cache/
+runtime/CodexPetNative.sha256
